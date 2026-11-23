@@ -1,6 +1,6 @@
 # Collaboration status and handoff
 
-Updated: 2026-11-23T20:05Z. Branch: `collab/pr15` (kept as the source for the RFC-0020 adapter;
+Updated: 2026-11-23T20:22Z. Branch: `collab/pr15` (kept as the source for the RFC-0020 adapter;
 its pull requests are closed).
 
 **This page does not state the delivered head, the CI verdict or what is unpushed.** Those move
@@ -39,6 +39,34 @@ is either the identity of the commit being discussed or the value of an earlier 
 history; it is never a standing "the delivered head is `<hash>`" claim, which the next push turns
 into a false statement. In the same way, what a further push would carry is read rather than
 listed: `git log --oneline <headRefOid>..HEAD`.
+
+## 2026-11-23 — the adapter plan: inventory, six surfaces, first increment
+
+Artifact: [`adapters.md`](adapters.md), added by the commit that carries this section. It
+inventories the branch module by module with line counts (about 32 300 lines of collaboration code,
+counted at `647ce7e6`), names the six surfaces under RFC-0020, records the contracts and sets the
+first increment at about 1 400 lines.
+
+- **Contracts read live at 2026-11-23T20:12Z**: `craft-libs#160` merged 2026-11-17, merge commit
+  `fd7232d7`; `#128` open, head `9a6148e0` (the CraftHub GOPM core, **not** the RFC-0020 session
+  contract); `#345` open, head `cef9e963` (oracle-conditional); `#716` open, head `7666e2b1`
+  (already pinned in `apps/deckcraft-web` from `copoka/craft-libs`); `#2108` open, head
+  `2882d72`. The live-session contract of RFC-0020 landing order item 2 has no PR and no head.
+- **Two findings for the increment.** RFC-0020 guarantee 1 wants a local recoverable copy for
+  text typed into a scope a structural command deleted; the branch refuses the late operation on
+  every replica (tested) and discards the text. And the host contract's `commenter` role string
+  has to map to `viewer`, never `editor`.
+- **Drift**: `git fetch origin` at 2026-11-23T20:15Z printed `origin/main` `2d031bb6`;
+  `git rev-list --left-right --count origin/main...HEAD` printed `91 163`; `git merge-tree
+  --write-tree` exits 1 with seven conflicted files (`AGENTS.md`, `Cargo.lock`,
+  `apps/deckcraft-web/src/web.rs`, four under `crates/pptx`). The rebase is the adapter base's
+  first task; a merge would carry main's `.github/workflows` changes and the push credential has
+  no `workflow` scope (recorded once, not asked for).
+- **Gate** at `647ce7e6`: `cargo metadata --locked` rc 0, `cargo fmt --all -- --check` rc 0 on the
+  host, `.craft/logs/gate-deckcraft-adapters-20261123T2020.log`. The only delta to this section's
+  head is documentation.
+- **Next:** rebase the adapter base onto `2d031bb6`, then the first increment from `adapters.md`
+  — the contract seam, deleted-scope recovery and the conformance harness.
 
 ## 2026-11-23 — the board is cleared: three collab PRs and the house-rules PR closed
 
