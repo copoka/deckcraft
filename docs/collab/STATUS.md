@@ -2167,18 +2167,9 @@ token from the cabinet.
    `git rev-parse HEAD`, `git status --porcelain` and `git log --oneline origin/main..HEAD` for
    what a push would carry. The header holds those commands and one dated reading; §Session log
    and §PR publication hold the earlier ones as history.
-   **No workflow run has executed on this branch yet**: the runs created when each recent head was
-   pushed are `completed / action_required` with `startedAt` equal to the creation time, so no job
-   started, the `UNSTABLE` verdict is the missing approval and not a red job, and the only
-   executed check on those heads is CodeRabbit's (which shows on the pull request rather than in
-   the rollup). Read them with the **full** 40-character `headRefOid`, never a prefix: a prefix
-   prints `[]` for a head that has runs (verified 2026-11-13T15:05Z for every length 7–39), and the
-   run's `headSha` field ties it to the commit. The head read at 2026-11-13T15:04Z carries four such
-   runs — CI `43432922003`, House rules `43432921895`, Nix `43432922038`, SonarCloud `43432922089`,
-   created 13:21:13–14Z. **What is left is an approve, then review and merge — no push**: a person
-   approves the runs of whatever head #2012 reports, and the maintainer takes #2012. An approval
-   given to an earlier head's runs does not move to a new head, so it has to be given against the
-   head the pull request reports at that moment.
+   The runs and the missing approvals recorded under the old #2012 heads are history: with the
+   pull request closed there is nothing left to approve. The gate readings below survive as a
+   starting point for the adapter, never as a verdict on a new head.
    The §8 gate on the code was green at `1227aa15` — 8/8 steps (fmt, pdf-deps, clippy, test,
    doctest, assets, layers, wasm), 2866 tests, on the build host with the CI font and i18n pins
    (`../.craft/reports/20261112-1950-pr-sweep.md`, log `gate-deckcraft-1227aa15-pin.log`). Do not
@@ -2190,14 +2181,8 @@ token from the cabinet.
    (§Session log, 2026-11-13 — the lock fix is the head and its gate is green; log
    `gate-deckcraft-2012-3095c6fe.log`). For any later head the same read decides: `git log --oneline
    3095c6fe..<headRefOid> -- crates apps`.
-   **A push is what the branch now waits for, and it is a person's step: the 2026-11-16 merge of
-   `origin/main` is committed locally and not delivered.** `d766e45b` merges `bb2c2254` onto
-   `29a243ed`, `git merge-tree --write-tree origin/main HEAD` exits 0, and the gate on it is green
-   (§Session log, 2026-11-16: `metadata --locked`, fmt, clippy, `deckcraft-engine` 626,
-   `deckcraft-ui-egui` 529, log `gate-deckcraft-2012-d766e45b.log`). The commit carries no code
-   change of this project beyond resolving the two content conflicts, main's naming guard and the
-   four lock lines; #2012 keeps reading `DIRTY` until the branch is pushed and the runs of the new
-   head are approved.
+   Local merges of `origin/main` (`d766e45b`, `59d13d64`, `411f9eac`) stay on the branch stack as
+   history; with #2012 closed they are not something to deliver.
    **The base moved again at 08:12Z the same day**: `git rev-parse --short origin/main` printed
    `9e975b00` (#1974), the merge is `59d13d64` on `collab/pr15` with `411f9eac` on top, and the
    gate on `411f9eac` is green (`gate-deckcraft-part15-411f9eac.log`, `EXIT rc=0`, 2790 tests);
