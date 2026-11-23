@@ -1,14 +1,16 @@
 # Collaboration status and handoff
 
-Updated: 2026-11-16T16:32Z. Branch: `collab/pr15`.
+Updated: 2026-11-23T20:05Z. Branch: `collab/pr15` (kept as the source for the RFC-0020 adapter;
+its pull requests are closed).
 
 **This page does not state the delivered head, the CI verdict or what is unpushed.** Those move
 without anyone touching this file, and a header that writes them down is false after the next
 push — which is what happened four times, each time costing a session that caught the page up by
 naming the new hash. The stable facts are the pull request and the commands that read the rest:
 
-- the pull request is **#2012 in `storytold/deckcraft`**, from branch `collab/pr15` of the fork
-  `copoka/deckcraft`;
+- no pull request is open from this fork: **#2012** (this branch), **#1998**, **#1975** and **#2206**
+  were closed as superseded on 2026-11-23 — see the dated section below. `collab/pr15` stays in
+  `copoka/deckcraft` as the source for the RFC-0020 adapter;
 - the live values are read, never carried over from below:
 
 ```bash
@@ -37,6 +39,31 @@ is either the identity of the commit being discussed or the value of an earlier 
 history; it is never a standing "the delivered head is `<hash>`" claim, which the next push turns
 into a false statement. In the same way, what a further push would carry is read rather than
 listed: `git log --oneline <headRefOid>..HEAD`.
+
+## 2026-11-23 — the board is cleared: three collab PRs and the house-rules PR closed
+
+Artifact of the pass, read with `gh pr view <N> --json state,mergeable,headRefOid` at
+2026-11-23T19:55Z: #1975 `closed`, #1998 `closed`, #2012 `closed`, #2206 `closed`. Each carries a
+comment with the reason; no branch was deleted, so every head is still in `copoka/deckcraft`.
+
+- **#1975, #1998, #2012 — superseded by RFC-0020** (Live collaboration, `storytold/craft-contrib`,
+  merged 2026-11-13). The adopted path is contracts in `craft-libs`, text through `Texts`/CRDT,
+  structured commands with scope locks, then a per-app adapter as its own PR. The app-local
+  protocol here predates that decision; its slices stay in `collab/pr10`, `collab/pr11`,
+  `collab/pr15` as the source for the adapter.
+- **#2206 — superseded by RFC-0072** (shared `AGENTS.md`, upstream #2268, `main` `3ffeffcd`).
+  `AGENTS.md` on `main` is generated from `craft-contrib` (`craft-agents:start source=5b1a2b19…`,
+  "do not edit this copy"). The rebase was run: the single commit `0218971a` conflicts only inside
+  the removed `craft-house-rules` block; resolving in favour of `main` drops it and the tree is
+  `origin/main`'s (`5ea99559`), `cargo metadata --locked` exit 0 on the build host. Keeping the
+  branch's side would resurrect a structure `main` removed.
+- **Delivery limit, recorded once:** the push credential has `repo`, `read:org`, `gist` and no
+  `workflow` scope, so a fork branch carrying `.github/workflows/release.yml` changes cannot be
+  pushed (`remote rejected … OAuth App … workflow`). It does not change either outcome above; no
+  maintainer action is asked for it.
+- **Next:** nothing is open from this fork. The next increment is the RFC-0020 adapter against
+  `craft-libs` contracts and `craft-crdt`, reusing the command surface and tests already in
+  `collab/pr15`.
 
 ## Замер 2026-11-16
 
@@ -2134,10 +2161,10 @@ token from the cabinet.
 
 1. Run the verification table above; if the tree is clean, continue on `collab/pr15` (or branch
    `collab/pr16` from it).
-2. **PR #2012 is the branch to continue on**, from `copoka/deckcraft:collab/pr15` into
-   `storytold/deckcraft:main`. The head is read from the pull request, not from this file:
-   `gh pr view 2012 --json headRefOid,mergeable,mergeStateStatus,state`, `git ls-remote fork
-   refs/heads/collab/pr15`, `git rev-parse HEAD`, and `git log --oneline <headRefOid>..HEAD` for
+2. **`collab/pr15` is the branch the adapter work starts from**, not a pull request any more:
+   #2012 was closed as superseded by RFC-0020 on 2026-11-23 (§2026-11-23 above), together with
+   #1998 and #1975. The push reads are `git ls-remote fork refs/heads/collab/pr15`,
+   `git rev-parse HEAD`, `git status --porcelain` and `git log --oneline origin/main..HEAD` for
    what a push would carry. The header holds those commands and one dated reading; §Session log
    and §PR publication hold the earlier ones as history.
    **No workflow run has executed on this branch yet**: the runs created when each recent head was
@@ -2177,11 +2204,9 @@ token from the cabinet.
    §Замер 2026-11-16 (сведение `origin/main` `9e975b00`) holds the commands, the `rc` of each step
    and the one-file resolution. `collab/pr11` carries the same merge (`6c4657ea`) plus the two
    defects the gate found there (`83456fd0`, `c548b8cb`), green at `c548b8cb`.
-   #1998 and #1975 are superseded by #2012 and stay open until a person closes them — **do not
-   close them from an agent session**. Their heads and verdicts move without this project's
-   involvement; the readings at 23:38Z and 05:44Z are history in §PR publication and §Session log,
-   and the live values are the same `gh pr view <N>` calls. Do not touch CI and do not mention
-   agents.
+   #1998 and #1975 were superseded by #2012 and are closed since 2026-11-23, with #2012 itself
+   (all three by RFC-0020). Their heads and verdicts move without this project's involvement; the
+   readings at 23:38Z and 05:44Z are history in §PR publication and §Session log.
 3. The browser side is in (`66d4658c`): `deckcraft:session` → the page's `WebSocket`,
    `session-state`/`presence` back, Save → `deckcraft:commit`, `committed` recorded, media over
    `fetch` with the session token. The desktop side is in too (`collab/pr14`): Save in a live
