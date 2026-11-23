@@ -61,6 +61,9 @@ comment with the reason; no branch was deleted, so every head is still in `copok
   `workflow` scope, so a fork branch carrying `.github/workflows/release.yml` changes cannot be
   pushed (`remote rejected … OAuth App … workflow`). It does not change either outcome above; no
   maintainer action is asked for it.
+- **Gate:** on the head pushed to `copoka/deckcraft:collab/pr15`, `cargo metadata --locked` rc 0 and
+  `cargo fmt --all --check` rc 0 on the build host; the only delta since `82d00a2c` — whose §8 gate
+  was green — is this file.
 - **Next:** nothing is open from this fork. The next increment is the RFC-0020 adapter against
   `craft-libs` contracts and `craft-crdt`, reusing the command surface and tests already in
   `collab/pr15`.
